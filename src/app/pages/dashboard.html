@@ -1,0 +1,33 @@
+<section class="page-content dashboard">
+  <div class="page-heading">
+    <div><h1>Bonjour, Amani <span>👋</span></h1><p>Voici ce qui se passe dans votre stock aujourd’hui.</p></div>
+    <button mat-stroked-button class="date-filter"><span>▦</span> 27 octobre 2026 <span class="chevron">⌄</span></button>
+  </div>
+
+  <div class="metrics-grid">
+    @for (metric of metrics; track metric.label) {
+      <article class="metric-card"><span class="metric-icon" [class]="'metric-icon '+metric.tone">{{ metric.icon }}</span><span class="metric-label">{{ metric.label }}</span><strong>{{ metric.value }}</strong><small [class]="'metric-note '+metric.tone">{{ metric.note }}</small></article>
+    }
+  </div>
+
+  <div class="insights-grid">
+    <article class="panel evolution-panel">
+      <div class="panel-heading"><div><h2>Évolution du stock</h2><p>Entrées et sorties sur les 7 derniers jours</p></div><span class="period-pill">Cette semaine</span></div>
+      <div class="chart-legend"><span><i class="legend-in"></i>Entrées</span><span><i class="legend-out"></i>Sorties</span></div>
+      <div class="chart">
+        <div class="axis-labels"><span>1 200</span><span>900</span><span>600</span><span>300</span></div>
+        <div class="chart-plot"><div class="gridline"></div><div class="gridline"></div><div class="gridline"></div><div class="gridline"></div>
+          @for (day of days; track day.name) { <div class="day-bars"><div class="bar-pair"><span class="bar incoming" [style.height.px]="day.in"></span><span class="bar outgoing" [style.height.px]="day.out"></span></div><small>{{day.name}}</small></div> }
+        </div>
+      </div>
+    </article>
+    <article class="panel category-panel"><div class="panel-heading"><div><h2>Répartition par catégorie</h2><p>Produits par catégorie</p></div></div>
+      <div class="category-list">@for (category of categories; track category.name) { <div class="category-row"><span>{{category.name}}</span><div class="track"><i [class]="'fill '+category.color" [style.width.%]="category.value"></i></div><b>{{category.value}}%</b></div> }</div>
+    </article>
+  </div>
+
+  <article class="panel alerts-panel"><div class="panel-heading"><div><h2>Alertes de stock faible</h2><p>Produits nécessitant une attention particulière</p></div><a routerLink="/produits" class="view-all">Voir tous les produits&nbsp; →</a></div>
+    <div class="table-scroll"><table><thead><tr><th>PRODUIT</th><th>RÉFÉRENCE</th><th>CATÉGORIE</th><th>QUANTITÉ</th><th>SEUIL MIN.</th><th>STATUT</th></tr></thead><tbody>@for (item of alerts; track item.ref) { <tr><td class="product-cell">{{item.name}}</td><td class="muted">{{item.ref}}</td><td class="muted">{{item.category}}</td><td>{{item.qty}}</td><td class="muted">{{item.min}}</td><td><span [class]="'status '+item.tone">{{item.status}}</span></td></tr> }</tbody></table></div>
+  </article>
+  <footer>© 2026 StockFlow · Gestion intelligente des stocks</footer>
+</section>

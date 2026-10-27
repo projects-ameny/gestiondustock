@@ -1,0 +1,31 @@
+<section class="page-content products-page">
+  <div class="page-heading"><div><h1>Produits</h1><p>Gérez votre catalogue, vos quantités et vos seuils de réapprovisionnement.</p></div><button mat-flat-button color="primary" class="add-button" (click)="showForm = true"><span>＋</span> Ajouter un produit</button></div>
+  <div class="metrics-grid">
+    <article class="summary-card"><div><span>Total références</span><strong>{{products.length.toLocaleString('fr-FR')}}</strong></div><i class="summary-icon blue">▦</i></article>
+    <article class="summary-card"><div><span>En stock</span><strong>{{inStockCount}}</strong></div><i class="summary-icon green">✓</i></article>
+    <article class="summary-card"><div><span>Stock faible</span><strong>{{lowStockCount}}</strong></div><i class="summary-icon amber">!</i></article>
+    <article class="summary-card"><div><span>Rupture</span><strong>{{outOfStockCount}}</strong></div><i class="summary-icon red">↘</i></article>
+  </div>
+  <article class="catalog-panel">
+    <div class="toolbar">
+      <mat-form-field appearance="outline" class="search-field"><mat-label>Rechercher un produit</mat-label><input matInput [(ngModel)]="search" placeholder="Nom ou référence"></mat-form-field>
+      <mat-form-field appearance="outline" class="filter-field"><mat-label>Catégorie</mat-label><mat-select [(ngModel)]="categoryFilter">@for (category of categories; track category) {<mat-option [value]="category">{{category}}</mat-option>}</mat-select></mat-form-field>
+      <mat-form-field appearance="outline" class="filter-field"><mat-label>Statut du stock</mat-label><mat-select [(ngModel)]="stockFilter">@for (status of statuses; track status) {<mat-option [value]="status">{{status}}</mat-option>}</mat-select></mat-form-field>
+      <button mat-stroked-button class="export-button" (click)="exportCsv()"><span>⇩</span> Exporter</button>
+    </div>
+    <div class="table-scroll"><table class="catalog-table"><thead><tr><th>PRODUIT</th><th>RÉFÉRENCE</th><th>CATÉGORIE</th><th>PRIX UNITAIRE</th><th>QUANTITÉ</th><th>STATUT</th><th>ACTIONS</th></tr></thead>
+      <tbody>@for (product of filteredProducts; track product.ref) {<tr><td><div class="product-name"><span [class]="'product-thumb '+product.tone">{{product.icon}}</span><strong>{{product.name}}</strong></div></td><td class="muted">{{product.ref}}</td><td class="muted">{{product.category}}</td><td>{{product.price | currency:'EUR':'symbol':'1.0-0':'fr'}}</td><td>{{product.quantity}}</td><td><span [class]="'status '+(product.status === 'En stock' ? 'success' : product.status === 'Rupture' ? 'danger' : 'warning')">{{product.status}}</span></td><td><button mat-icon-button aria-label="Actions produit">···</button></td></tr>} @empty {<tr><td colspan="7" class="empty-state">Aucun produit ne correspond à votre recherche.</td></tr>}</tbody>
+    </table></div>
+    <div class="pagination"><span>{{filteredProducts.length}} produit{{filteredProducts.length > 1 ? 's' : ''}} affiché{{filteredProducts.length > 1 ? 's' : ''}}</span><div><button mat-stroked-button disabled>‹</button><button mat-flat-button color="primary" class="current-page">1</button><button mat-stroked-button disabled>›</button></div></div>
+  </article>
+  <footer>© 2026 StockFlow · Gestion intelligente des stocks</footer>
+</section>
+
+@if (showForm) {
+  <div class="dialog-backdrop" (click)="showForm = false" (keydown.escape)="showForm = false">
+    <section class="product-dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" (click)="$event.stopPropagation()">
+      <div class="dialog-heading"><div><h2 id="dialog-title">Ajouter un produit</h2><p>Complétez les informations de ce produit.</p></div><button mat-icon-button aria-label="Fermer" (click)="showForm = false">×</button></div>
+      <form (ngSubmit)="addProduct()"><label>Nom du produit<input name="name" required [(ngModel)]="productName" placeholder="Ex. Écran UltraWide"></label><label>Référence<input name="ref" required [(ngModel)]="productRef" placeholder="Ex. ELE-3408"></label><label>Catégorie<select name="category" [(ngModel)]="productCategory"><option>Électronique</option><option>Accessoires</option><option>Mobilier</option></select></label><div class="form-row"><label>Prix unitaire (€)<input name="price" type="number" required min="0" step="0.01" [(ngModel)]="productPrice"></label><label>Quantité<input name="quantity" type="number" required min="0" [(ngModel)]="productQuantity"></label></div><div class="dialog-actions"><button mat-button type="button" (click)="showForm = false">Annuler</button><button mat-flat-button color="primary" type="submit">Ajouter au catalogue</button></div></form>
+    </section>
+  </div>
+}

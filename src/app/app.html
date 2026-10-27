@@ -1,0 +1,29 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" routerLink="/dashboard" aria-label="StockFlow, accueil">
+      <span class="brand-mark">S</span>
+      <span><strong>StockFlow</strong><small>INVENTORY PLATFORM</small></span>
+    </a>
+    <div class="side-divider"></div>
+    <p class="side-label">ESPACE DE TRAVAIL</p>
+    <nav class="navigation" aria-label="Navigation principale">
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><span class="nav-icon">▦</span>Vue d’ensemble</a>
+      <a routerLink="/produits" routerLinkActive="active"><span class="nav-icon">▤</span>Produits</a>
+      <a routerLink="/produits" fragment="mouvements"><span class="nav-icon">⇄</span>Mouvements</a>
+      <a routerLink="/produits" fragment="categories"><span class="nav-icon">▥</span>Catégories</a>
+      <a routerLink="/produits" fragment="fournisseurs"><span class="nav-icon">♧</span>Fournisseurs</a>
+    </nav>
+    <div class="side-divider settings-divider"></div>
+    <p class="side-label">PARAMÈTRES</p>
+    <a class="settings-link" routerLink="/dashboard">⚙ &nbsp;Paramètres</a>
+    <section class="help-card"><strong>Besoin d’aide ?</strong><p>Consultez le guide de<br>gestion des stocks.</p><a href="mailto:support@stockflow.fr">Ouvrir le guide&nbsp; →</a></section>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <label class="global-search"><span>⌕</span><input aria-label="Recherche globale" placeholder="Rechercher un produit, une référence..."></label>
+      <div class="top-actions"><button mat-icon-button aria-label="Aide">?</button><button mat-icon-button class="notification" aria-label="Notifications">♧<i></i></button><span class="avatar">AM</span></div>
+    </header>
+    <router-outlet />
+  </main>
+</div>
